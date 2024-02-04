@@ -1,0 +1,83 @@
+import streamlit as st
+import random
+
+try:
+    words_and_definitions = st.session_state.words_and_definitions
+    definitions = st.session_state.definitions
+    question = st.session_state.question
+except:
+    st.switch_page('C:/Users/yg201/바탕 화면/PyProject/AI-Streamlit/WordWise/main.py')
+
+st.markdown("""
+            <style>
+            [data-testid="collapsedControl"] {
+                display: none
+            }
+            .big-font {
+                font-size:30px;
+                font-weight: 600;
+            }
+
+            .title-big {
+                font-size:50px;
+                font-weight: 900;
+                text-align: center;
+            }
+                                
+
+            .st-emotion-cache-uf99v8 {
+                background: linear-gradient(45deg, #a9f4ff, #ecedc7);
+            }
+
+            
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}    
+            </style>
+""", unsafe_allow_html=True)
+
+
+st.markdown('<p class="title-big">Word-Wise</p>', unsafe_allow_html=True)
+st.divider()
+
+solved = False
+
+if words_and_definitions[question] in definitions:
+    definitions.remove(words_and_definitions[question])
+definitions = definitions[:st.session_state.candidate_num - 1]
+definitions.append(words_and_definitions[question])
+
+
+with st.form('Quiz', clear_on_submit=True):
+    st.header(question)
+
+
+    if st.session_state.subjective == False:
+        user_answer = st.radio(
+            '올바른 정답을 선택해주세요',
+            definitions,
+            index=0
+        )
+    else:
+        user_answer = st.text_input('올바른 정답을 입력해주세요')
+    
+    if st.form_submit_button(f'다음 단어'):
+        solved = True
+        
+# This is the answer
+answer = words_and_definitions[question]
+
+if 'correct_or_wrong' not in st.session_state:
+    st.session_state.correct_or_wrong = {}
+
+if solved == True:
+    if answer == user_answer:
+        st.success('Correct')
+        st.session_state.question_list.remove(question)
+        st.session_state.correct_or_wrong[question] = 'Correct'
+    else: 
+        st.error('Wrong')
+        st.session_state.question_list.remove(question)
+        st.session_state.correct_or_wrong[question] = 'Wrong'
+
+    st.switch_page('C:/Users/yg201/바탕 화면/PyProject/AI-Streamlit/WordWise/main.py')
