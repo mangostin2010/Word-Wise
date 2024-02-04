@@ -1,7 +1,6 @@
 import streamlit as st
 from streamlit_extras.add_vertical_space import add_vertical_space
 import random
-from streamlit_js_eval import streamlit_js_eval
 from streamlit_extras.stylable_container import stylable_container
 
 st.set_page_config(page_title='Word Wise', page_icon='🤓', initial_sidebar_state='collapsed')
